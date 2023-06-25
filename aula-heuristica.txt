@@ -1,0 +1,45 @@
+Problema do Caixeiro Viajante - Heurística
+
+Como vimos na aula passada, o problema do caixeiro viajante consiste que em um conjunto interconectado* de N cidades --- a partir de uma cidade de origem 0 --- se escolha o menor caminho que conecte (visite) todas as N cidades existentes, retornando à cidade de origem 0 sem repetir a visita a nenhuma das cidades.
+
+Este problema é computacionalmente difícil, apresentando custo N! em sua solução combinatória e 2^n * n^2 em sua formulação inteira (Miller Tucker Zemlin).
+
+A formulação Held Karp (não abordada) também resolve o PCV em tempo 2^n * n^2 e serve como um benchmark (limite inferior) para a perfomance de soluções do caixeiro viajante, que pode ser usada para aferir o desempenho de soluções heurísticas, o tema da nossa aula.
+
+As soluções heurísticas são técnicas usadas quando os algoritmos convencionais são lentos para fornecer respostas precisas. Elas oferecem respostas aproximadas de forma mais rápida, sacrificando precisão (obtendo soluções um pouco piores que as otimas) em troca de velocidade.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Heurística Gananciosa do Vizinho mais Próximo
+
+A heurística gananciosa consiste na produção de soluções candidatas para o problema do caixeiro viajante consiste em:
+
+1. Selecionar uma cidade qualquer j
+2. Defina uma cidade de origem = j
+3. Defina uma cidade atual = j
+4. Crie um conjunto solução S = {j}
+5. Crie um conjunto de cidades a serem visitadas W contendo todas as outras n-1 cidades (exceto j)
+6. Enquanto o conjunto de cidades a serem visitadas não for vazio:
+	Selecione de W a cidade i mais próxima da cidade atual.
+		Atualize cidade atual = i
+		Adicione cidade atual ao conjunto solucao
+		Remova a cidade atual do conjunto W
+7. Adicione a cidade de origem ao conjunto solução
+
+Essa heurística apresenta custo computacional de O(n^2), porém, para 100 cidades, segundo Bresson(2021) produz, em média, soluções 24.73% piores que a solução ótima.
+
+Existem outras heurísticas (não apresentadas) que produzem soluções de forma mais rápida sem tanto sacrifício em relação a eficiência da solução otima. Um exemplo, é a heurística de inserção mais distante que produz, em média, soluções 7.59% piores que a solução ótima (Bresson, 2021).
+
+O Google OR Tools, um solver que abstrai os algoritmos, heurísticas e técnicas escolhidas para resolver problemas de PI, resolve estas mesmas cem cidades 
+produzindo, em médida, soluções 2.9% piores que a ótima (Bresson, 2021).
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Agora veremos a resolução exata por programação inteira pelo método MTZ, a solução gananciosa do vizinho mais próximo e por fim, executaremos o guia
+do or tools (https://colab.research.google.com/github/google/or-tools/blob/stable/examples/notebook/constraint_solver/tsp_cities.ipynb?hl=pt-br) para resolver o problema do caixeiro viajante.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Referências Bibliográficas:
+
+BRESSON, Xavier; LAURENT, Thomas. The transformer network for the traveling salesman problem. arXiv preprint arXiv:2103.03012, 2021.
